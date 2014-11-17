@@ -1,26 +1,13 @@
 <?php
+/*     
+	前台用户表
+	表结构：(aid, name)  
+*/
+class User extends Eloquent{
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
+	public $timestamps = false;
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
+	protected $table = 'front_user';
 
-	use UserTrait, RemindableTrait;
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password', 'remember_token');
 
 }

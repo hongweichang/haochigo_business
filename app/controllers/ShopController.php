@@ -10,16 +10,14 @@
 class ShopController extends BaseController {
 
 	/**
-	 * 进入收藏的商家的界面
+	 * 获取某个店铺的菜单
 	 *
-	 * 对应API：main/AJAX
+	 * 对应API：
 	 * 请求类型：POST
-	 * @return [type] [description]
+	 * @return array 该店铺的菜单
 	 */
-	public function post_store(){
-		$shop_id = Input::get('shop_id');
-		$place_id = Input::get('place_id');
-		return $a;
+	public function getMenus(){
+
 	}
 
 	/**

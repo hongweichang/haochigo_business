@@ -3,18 +3,53 @@
 /**
  * 菜单管理控制器
  *
- * getMenu_comment：获取某个菜单的评论信息
+ * 
+ * addMenu()		添加菜单
+ * getMenu_comment	获取某个菜单的评论信息
  */
 class MenuController extends BaseController {
 
-	# 添加菜单
 	# 删除菜单
 	# 修改菜单
 	# 
 	# 获取某个店铺的菜单的分类
 	# 获取某个店铺的菜单
-	# 菜单的评价
-	# 获取菜单的评价			------------> OK
+
+	/**
+	 * 删除菜单
+	 *
+	 * 对应API
+	 * 请求类型：POST
+	 * @return array 执行状态消息
+	 */
+	public function delMenu(){
+		$menu_id = Input::get('menu_id');
+		Menu::delete($menu_id);				// 应该是可以直接根据主键进行删除的
+	}
+
+	/**
+	 * 添加菜单
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 * @return array 执行状态消息
+	 */
+	public funciton addMenu(){
+		$data = array();
+
+		// 在添加菜单的时候有很多默认字段这里就不写了
+		$data['shop_id'] = Input::get('shop_id');
+		$data['title'] = Input::get('title');
+		$data['group_id'] = Input::get('group_id');		// 如果未分类就默认为0
+		$data['intro'] = Input::get('intro');
+		$data['price'] = Input::get('price');
+		$data['pic'] = Input::get('pic');	// 默认为空
+		$data['addtime'] = time();	// 就是当前的时间了
+		$data['num_today'] = Input::get('num_today');	//每日总量，可设置为无上限
+		$data['state'] = 1;			// 该商品的状态，默认为1表示有货,1表示接受预定
+
+		Menu::insert($data);
+	}
 
 
 	/**

@@ -6,6 +6,8 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+Route::get('deal/{uid?}', 'PersonController@getRecent_user_deal');
+/*
 
 Route::get('test/{uid?}', 'ShopController@my_store');
 

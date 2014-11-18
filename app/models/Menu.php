@@ -8,6 +8,8 @@ class Menu extends Eloquent{
 
 	public $timestamps = false;
 
-	protected $table = 'comment';
+	protected $table = 'menu';
+
+	protected $primaryKey = 'id';
 
 }

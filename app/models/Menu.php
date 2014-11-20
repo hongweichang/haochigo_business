@@ -1,15 +1,16 @@
 <?php
 
-/*
-	菜单总表
-	表结构：(id, shop_id, group_id, title, intro, price, unit, pic, pic_small, addtime, num_today, sold_time, sold_num, state, isdel, pinyin, pin_jian, comment_score, comment_num, collect_num)
+/**
+ * 菜单总表
+ *
+ * getClassify()	获取某个店铺菜单的分类
  */
-class Menu extends Eloquent{
+ 
+ class Menu extends Eloquent{
 
 	public $timestamps = false;
 
 	protected $table = 'menu';
 
-	protected $primaryKey = 'id';
 
 }

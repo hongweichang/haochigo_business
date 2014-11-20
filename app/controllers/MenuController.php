@@ -3,17 +3,43 @@
 /**
  * 菜单管理控制器
  *
- * 
- * addMenu()		添加菜单
- * getMenu_comment	获取某个菜单的评论信息
+ * addMenu()			添加一个菜单
+ * delMenu()			删除某个菜单
+ * getMenu_comment()	获取某个菜单的评论信息
+ * modifyMenu()			修改某一个菜单
  */
 class MenuController extends BaseController {
 
-	# 删除菜单
-	# 修改菜单
-	# 
-	# 获取某个店铺的菜单的分类
-	# 获取某个店铺的菜单
+	/**
+	 * 添加一个菜单
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 */
+	public function addMenu(){
+		$menu = new Menu;
+		$menu->shop_id = Input::get('shop_id');
+		$menu->group_id = Input::get('group_id');
+		$menu->title = Input::get('title');
+		$menu->price = Input::get('price');
+		$menu->pic = Input::get('pic');
+		$menu->pic_small = Input::get('pic_small');
+		$menu->state = Input::get('state');
+		$menu->save();
+	}
+	
+	/**
+	 * 修改某个菜单
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 * @return array 执行状态信息
+	 */
+	public function modifyMenu(){
+		$menu_id = Input::('menu_id');
+		$data = Input::('data');		// 把要修改的信息弄成一个数组
+		Menu::where('id', $menu_id)->update($data);
+	}
 
 	/**
 	 * 删除菜单
@@ -64,10 +90,10 @@ class MenuController extends BaseController {
 		$shop_level = array('level_5' => 0, 'level_4' => 0, 'level_3' => 0, 'level_2' => 0, 'level_1' => 0);
 		$comment_body = array();
 
-		$ids = Comment::where('menu_id', '=', $menu_id)->lists('id');	
+		$ids = CommentMenu::where('menu_id', '=', $menu_id)->lists('id');	
 		foreach($ids as $id){
 			$u_comment = array();
-			$comment = Comment::find($id);
+			$comment = CommentMenu::find($id);
 			$person = User::where('front_uid', '=', $comment->front_uid)->lists('nickname');
 			$u_comment['comment_person'] = $person[0];
 			$u_comment['comment_date'] = $comment->time;

@@ -4,15 +4,121 @@
 /**
  * 个人管理控制器
  *
- * 
- * cancel_store()			取消收藏的某个菜单
+ * addOrder()				添加订单
+ * cancelOrder()			取消某个订单，会立刻删除
+ * confirmOrder()			确认收货
+ * collectGood()			收藏某个菜单
+ * collectMenu()			收藏某个店铺
+ * delMenu()				删除收藏的某个菜单
+ * delShop()				删除收藏的某个店铺
  * getDeal_info()			获取某一个订单的信息
  * getMy_collect_goods()	获取我收藏的商品
  * getMy_store()			获取我收藏的店铺
  * getRecent_user_deal()	获取某个用户最近的订单
  * putMenu_comment()		给某个菜单进行评价
+ * putMenu_speed()			给某个订单进行评价
  */
+
 class PersonController extends Controller {
+
+	/**
+	 * 添加订单
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 */
+	public function addOrder(){
+		$order = new Order;
+		$order->shop_id = Input::get('shop_id');
+		$order->front_user_id = Input::get('front_user_id');
+		$order->ordertime = time();
+		$order->total = Input::get('total');
+		$order->order_menus = Input::get('menus');
+		$order->total_pay = Input::get('total_pay');
+		$order->score_money = Input::get('score_mon');
+		$order->dispatch = Input::get('dispatch');
+		$order->beta = Input::get('beta');
+		$order->state = 5;
+		$order->receive_address_id = Input::get('receive_address_id');
+
+		$order->save();
+	}
+
+	/**
+	 * 取消某个订单
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 * @return [type] [description]
+	 */
+	public function cancelOrder(){
+		$order_id = Input::get('order_id');
+		Order::find($order_id)->delete();
+	}
+
+	/**
+	 * 确认收货
+	 *
+	 * 对应API
+	 * 请求类型：POST
+	 * @return array 执行状态
+	 */
+	public function confirmOrder(){
+		$order_id = Input::get('order_id');
+		Order::where('id', $order_id)->update(array('state' => 1));
+	}
+
+	/**
+	 * 收藏某个菜单
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 * @return array 执行状态
+	 */
+	public function collectGood(){
+		$collect = new CollectMenu;
+		$collect->user_id = Input::get('user_id');
+		$collect->menu_id = Input::get('menu_id');
+		$collect->save();
+	}
+
+	/**
+	 * 收藏某个店铺
+	 *
+	 * 对应API：
+	 * 请求类型：POST
+	 * @return array 执行状态
+	 */
+	public function collectMenu(){
+		$collect = new CollectShop;
+		$collect->user_id = Input::get('user_id');
+		$collect->shop_id = Input::get('shop_id');
+		$collect->save();
+	}
+
+	/**
+	 * 删除收藏的商品
+	 * @return array 执行状态
+	 */
+	public function delMenu(){
+		$shop_id = Input::get('shop_id');		// 这个应该是不必要的，因为商品本就是唯一的
+		$menu_id = Input::get('good_id');	
+
+		CollectMenu::where('menu_id', $menu_id)->delete();
+	}
+
+	/**
+	 * 删除收藏的商家
+	 *
+	 * 对应API：personal/删除收藏的商家
+	 * 请求类型：POST
+	 * @return array 执行状态
+	 */
+	public function delShop(){
+		$shop_id = Input::get('shop_id');
+
+		CollectShop::where('shop_id', $shop_id)->delete();
+	}
 
 	/**
 	 * 获取某个用户最近的订单
@@ -136,31 +242,13 @@ class PersonController extends Controller {
 		return $result;
 	}
 
-	/**
-	 * 	取消收藏
-	 * 	
-	 * 对应API：main/AJAX
-	 * @return [type] [description]
-	 */
-	public function cacel_store(){
-		$shop_id = Input::get('shop_id');
-		$place_id = Input::get('place_id');
 
-		$output = array();
-		$output['success'] = 'true';
-		$output['state'] = 200;
-		$output['nextSrc'] = '';
-		$output['errMsg'] = '';
-		$output['no'] = 0;
-
-		return $output;
-	}
 
 	/**
 	 * 给某个菜单评价
 	 *
 	 * 对应API：personal/Ajax/点评商品等级
-	 * 请求类型：post
+	 * 请求类型：POST
 	 * @return [type]          [description]
 	 */
 	public function putMenu_comment(){
@@ -171,7 +259,7 @@ class PersonController extends Controller {
 		$data['goods_level'] = Input::get('goods_level');
 		$data['goods_comment'] = Input::get('goods_comment');
 
-		Comment::insert($data);
+		CommentMenu::insert($data);
 
 		$output = array();
 		$output['success'] = 'true';
@@ -180,6 +268,25 @@ class PersonController extends Controller {
 		$output['errMsg'] = '';
 		$output['no'] = 0;
 		return $output;
+	}
+
+	/**
+	 * 给某个订单做评价
+	 *
+	 * 对应API：personal/点评送餐速度
+	 * 请求类型：POST
+	 * @return array 执行状态
+	 */
+	public function putMenu_speed(){
+		$data = array();
+		$data['front_uid'] = Input::get('');			// 从session获取
+		$data['shop_id'] = Input::get('shop_id');
+		$data['order_id'] = Input::get('deal_id');
+		$data['deal_speed'] = Input::get('deal_speed');
+		$data['comment'] = Input::get('deal_satisfied_comment');
+		$data['value'] = Input::get('deal_satisfied');
+
+		CommentOrder::insert($data);
 	}
 
 }

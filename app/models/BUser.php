@@ -13,7 +13,7 @@ class BUser extends Eloquent implements UserInterface, RemindableInterface{
 
     use UserTrait, RemindableTrait;
 
-    protected $table = 'v_business_user';
+    protected $table = 'business_user';
 
     protected $primaryKey = 'b_uid';
 

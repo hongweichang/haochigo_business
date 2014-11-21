@@ -328,4 +328,34 @@ class ShopController extends BaseController {
 		//return $result;
 	}
 
+
+
+    //店铺坐标geohash设置范例
+    public function geoHashSet(){
+        $geohash = new Geohash();
+        /*
+         **此处参数分别对应，经度，纬度，商铺id，商业用户id。修改时，后面两个id可以为空,这里的数据格式我在model里面会验证
+         **返回值为数组，status为ok则为成功，msg对应相应反馈信息
+         **你后面如果有开发后端内部API的需求，返回值格式建议与我统一
+        */
+        $set = $geohash->geohashSet(39.98123662, 116.30683690,4,4);
+
+        var_dump($set);
+    }
+
+
+    //根据坐标查询附近店铺范例
+    public function geoHashGet(){
+        $geohash = new Geohash();
+
+        /*
+         **此处参数对应经纬度
+         **返回值为数组，status标识同上
+         **data对应查到的数据，若不为空，data数组内，geohash对应geohash表的坐标及geohash信息，shop对应shop表里面的店铺数据
+         */
+        $get = $geohash->geohashGet(39.98123662, 116.30683690);
+
+        var_dump($get);
+    }
+
 }

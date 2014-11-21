@@ -10,5 +10,10 @@ class Shop extends Eloquent{
 
 	protected $table = 'shop';
 
+    public function geohash()
+    {
+        return $this->hasOne('Geohash','id','shop_id');
+    }
+
 
 }

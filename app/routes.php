@@ -8,6 +8,8 @@ Route::get('/', function()
 });
 
 Route::get('getMenus', 'ShopController@getMenus');
+Route::get('geohashSet', 'ShopController@geoHashSet');
+Route::get('geohashGet', 'ShopController@geoHashGet');
 
 
 

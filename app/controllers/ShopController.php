@@ -127,24 +127,43 @@ class ShopController extends BaseController {
 	 */
 	public function addShop(){
 		$shop = new Shop;
-		$shop->b_uid = Input::get('b_uid');	// 商铺ID
+
+		$shop->b_uid = Input::get('b_uid');	// 这是商业用户的id，不是前端给的，从session里面获取
+
 		$shop->name = Input::get('name');
+
 		$shop->addtime = time();
+
 		$shop->intro = Input::get('intro');
 		$shop->linkname = Input::get('linkname');
+        //一般电话需要做格式校验
 		$shop->linktel = Input::get('linktel');
 		$shop->tel = Input::get('tel');
+
 		$shop->address = Input::get('address');
+        //比如这个价格，只能是数字那么需要加判断
 		$shop->least_price = Input::get('least_price');
 		$shop->dispatch_price = Input::get('dispatch_price');
+        //这个店铺开启状态值，你觉得会让用户在添加店铺的时候设置么？
 		$shop->state = Input::get('state');
+        //图片不是这样获取的，你自己查一下PHP是怎么处理前端上传的图片的
 		$shop->pic = Input::get('pic');
+
+        //这种状态值形式的数据，前端给过来的时候，是不会和我们数据库里的形式一样的，你要知道，前端所有代码都是别人能看的，我们能把我们数据库的存储方式放在前端么？
 		$shop->ticket = Input::get('ticket');
+        //同上
+        $shop->pay_method = Input::get('pay_method');
+        //微信id，也最好做校验，格式
 		$shop->weixin = Input::get('weixin');
-		$shop->pay_method = Input::get('pay_method');
+
+        //这里你要看前端是怎么填写，选择还是输入框
 		$shop->interval = Input::get('interval');
+        //这里肯定前端只会传两个时间给你，你需要自己拼接字符串啊
 		$shop->operation_time = Input::get('operation_time');
+        //同上
 		$shop->type = Input::get('type');
+
+
 		$shop->reserve = Input::get('reserve');
 		$shop->support_activity = Input::get('support_activity');
 		$shop->begin_time = Input::get('begin_time');

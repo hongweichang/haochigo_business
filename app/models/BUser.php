@@ -19,4 +19,9 @@ class BUser extends Eloquent implements UserInterface, RemindableInterface{
 
     public $timestamps = false;
 
+    public function user()
+    {
+        return $this->belongsTo('User','uid','uid');
+    }
+
 }

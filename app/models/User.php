@@ -29,6 +29,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->hasOne('FrontUser','uid','uid');
     }
 
+    public function BUser(){
+        return $this->hasOne('BUser','uid','uid');
+    }
+
     public $timestamps = false;
 
 }
